@@ -9,13 +9,13 @@ add_library(compiler_flags INTERFACE)
 target_compile_features(compiler_flags INTERFACE cxx_std_17)
 
 set(gcc_like_cxx "$<COMPILE_LANG_AND_ID:CXX,ARMClang,AppleClang,Clang,GNU,LCC>")
+# macos frameworks: https://stackoverflow.com/questions/27585896/how-to-use-framework-using-cmake
+set(macos_frameworks "-framework OpenGL;-framework Cocoa;-framework IOKit")
 ## no -Wall; effective cmake(https://gist.github.com/mbinna/c61dbb39bca0e4fb7d1f73b0d66a4fd1)
 target_compile_options(compiler_flags INTERFACE
   "$<${gcc_like_cxx}:$<BUILD_INTERFACE:-Wextra;-Wshadow;-Wformat=2;-Wunused;-Wno-deprecated;-fcolor-diagnostics;-fansi-escape-codes;-g>>"
 )
-target_compile_options(compiler_flags INTERFACE
-  "$<${gcc_like_cxx}:>"
-)
+
 
 # set shared libs option
 option(BUILD_SHARED_LIBS "build GLFW is built as a dynamic library" ON)
@@ -56,7 +56,7 @@ endif()
 add_executable(TestDrive main.cpp)
 
 # add libraries to the main executable
-target_link_libraries(TestDrive PRIVATE compiler_flags glfw glad)
+target_link_libraries(TestDrive PRIVATE compiler_flags glfw glad ${macos_frameworks})
 
 target_include_directories(TestDrive
   PRIVATE
