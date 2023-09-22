@@ -33,3 +33,6 @@
 
 # CMake build files
 build/
+
+# Apple DS_Store
+**/.DS_Store/
