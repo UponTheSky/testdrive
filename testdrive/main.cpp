@@ -1,10 +1,16 @@
-#include <iostream>
-
 #include "window.h"
 
 int main() {
 
-  std::cout << "My test drive, just like the one of Hiccup and Toothless" << std::endl;
+  window::GLFWwindowWrapper* window = window::GLFWwindowWrapper::GetInstance();
+
+  while (!window->ShouldClose()) {
+
+
+    window->SwapBuffers();
+    window->PollEvents();
+  }
+
 
   return 0;
 }

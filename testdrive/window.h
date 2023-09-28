@@ -3,6 +3,7 @@
 // STL
 #include <string>
 #include <stdexcept>
+#include <cassert>
 
 // OpenGL libraries
 #include <glad/glad.h>
@@ -24,7 +25,11 @@ namespace window {
       static GLFWwindowWrapper* GetInstance();
       ~GLFWwindowWrapper();
 
-      void Terminate();
+      void Terminate() const;
+      bool ShouldClose() const;
+      void SwapBuffers() const;
+      void PollEvents() const;
+
     private:
       // singleton
       GLFWwindowWrapper(GLFWwindow* window);
@@ -37,4 +42,7 @@ namespace window {
   // Load all OpenGL functions using the glfw loader function
   // see: https://www.khronos.org/opengl/wiki/OpenGL_Loading_Library
   void LoadOpenGLFunctions();
+
+  // callbacks
+  void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 };

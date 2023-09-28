@@ -8,7 +8,7 @@ option(BUILD_SHARED_LIBS "build GLFW is built as a dynamic library" ON)
 include(fetch_third_party_libraries)
 
 # add the main executable
-add_executable(testdrive main.cpp)
+add_executable(testdrive main.cpp window.cpp)
 
 # add libraries to the main executable
 ## macos frameworks: https://stackoverflow.com/questions/27585896/how-to-use-framework-using-cmake
@@ -20,4 +20,5 @@ target_include_directories(testdrive
   ${glfw_SOURCE_DIR}/include/GLFW
   ${glad_BINARY_DIR}/include/glad
   ${glad_BINARY_DIR}/include/KHR
+  ${CMAKE_CURRENT_SOURCE_DIR}
 )
