@@ -4,10 +4,11 @@
 #include <cassert>
 #include <algorithm>
 #include <stdexcept>
+#include <vector>
 
 class BaseVec {
   public:
-    virtual ~BaseVec();
+    virtual ~BaseVec() = default;
 
     // member function
     const float& operator[](size_t index) const;
@@ -30,8 +31,7 @@ class BaseVec {
     BaseVec& operator=(BaseVec&& other);
 
   private:
-    const size_t _capacity;
-    float* _array;
+    std::vector<float> _array;
 };
 
 class Vec2 : public BaseVec {

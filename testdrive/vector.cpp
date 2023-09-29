@@ -1,32 +1,17 @@
 #include "vector.h"
 
+#include <vector>
 /* BaseVec */
-BaseVec::BaseVec(size_t capacity) : _capacity(capacity) {
+BaseVec::BaseVec(size_t capacity) : _array(std::vector<float>(capacity, 0.0f)) {
   assert(capacity > 0);
-  _array = new float[capacity];
 }
 
-BaseVec::~BaseVec() {
-  delete[] _array;
-}
+BaseVec::BaseVec(const BaseVec& other) : _array(other._array) {}
 
-BaseVec::BaseVec(const BaseVec& other) : _capacity(other._capacity) {
-  std::copy(other._array, other._array + other._capacity, _array);
-}
-
-BaseVec::BaseVec(BaseVec&& other) : _capacity(other._capacity), _array(other._array) {}
+BaseVec::BaseVec(BaseVec&& other) : _array(std::move(other._array)) {}
 
 BaseVec& BaseVec::operator=(const BaseVec& other) {
-  if (_capacity != other._capacity) {
-    throw std::runtime_error("Two objects have different capacities");
-  }
-
-  std::copy(other._array, other._array + other._capacity, _array);
-  return *this;
-}
-
-BaseVec& BaseVec::operator=(BaseVec&& other) {
-  if (_capacity != other._capacity) {
+  if (_array.size() != other._array.size()) {
     throw std::runtime_error("Two objects have different capacities");
   }
 
@@ -34,8 +19,17 @@ BaseVec& BaseVec::operator=(BaseVec&& other) {
   return *this;
 }
 
+BaseVec& BaseVec::operator=(BaseVec&& other) {
+  if (_array.size() != other._array.size()) {
+    throw std::runtime_error("Two objects have different capacities");
+  }
+
+  _array = std::move(other._array);
+  return *this;
+}
+
 const float& BaseVec::operator[](size_t index) const {
-  if (!(0 <= index && index < _capacity)) {
+  if (!(0 <= index && index < _array.size())) {
     throw std::runtime_error("Index out of range");
   }
 
