@@ -30,6 +30,8 @@ namespace window {
       void SwapBuffers() const;
       void PollEvents() const;
 
+      void ProcessInput();
+
     private:
       // singleton
       GLFWwindowWrapper(GLFWwindow* window);

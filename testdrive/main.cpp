@@ -5,10 +5,10 @@ int main() {
   window::GLFWwindowWrapper* window = window::GLFWwindowWrapper::GetInstance();
 
   while (!window->ShouldClose()) {
+    window->ProcessInput();
 
-
-    window->SwapBuffers();
     window->PollEvents();
+    window->SwapBuffers();
   }
 
 

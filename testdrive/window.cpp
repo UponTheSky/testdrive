@@ -48,6 +48,12 @@ window::GLFWwindowWrapper* window::GLFWwindowWrapper::GetInstance() {
 window::GLFWwindowWrapper::GLFWwindowWrapper(GLFWwindow* glfw_window)
 : _glfw_window(glfw_window) {}
 
+void window::GLFWwindowWrapper::ProcessInput() {
+  if (glfwGetKey(_glfw_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    glfwSetWindowShouldClose(_glfw_window, true);
+  }
+}
+
 /* glfw function wrapped */
 window::GLFWwindowWrapper::~GLFWwindowWrapper() {
   Terminate();
