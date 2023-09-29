@@ -4,12 +4,25 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-class Renderer {
-  public:
-    Renderer();
+// custom libraries
+#include "vector.h"
 
-    void Render();
+namespace render {
+  class RenderState {
+    public:
+      static RenderState* GetInstance();
+      Vec4 GetBackgroundColor() const;
 
-  private:
+    private:
+      RenderState(const Vec4& backgroundColor);
+      static RenderState* _instance;
+      Vec4 _backgroundColor;
+  };
 
+  class Renderer {
+    public:
+      Renderer() = default;
+
+      void Render(RenderState& state);
+  };
 };
