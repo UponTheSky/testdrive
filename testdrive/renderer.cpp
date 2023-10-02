@@ -16,7 +16,7 @@ glm::vec4 render::RenderState::GetBackgroundColor() const {
   return _backgroundColor;
 }
 
-void render::Renderer::Render(RenderState& state) {
+void render::Renderer::RenderBackground(const RenderState& state) {
   glClearColor(
     state.GetBackgroundColor()[0],
     state.GetBackgroundColor()[1],
@@ -25,4 +25,10 @@ void render::Renderer::Render(RenderState& state) {
   );
 
   glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader) {
+  shader.Use();
+  mesh.BindVAO();
+  glDrawArrays(GL_TRIANGLES, 0, 3);
 }

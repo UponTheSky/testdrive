@@ -8,7 +8,7 @@ option(BUILD_SHARED_LIBS "build GLFW is built as a dynamic library" ON)
 include(fetch_third_party_libraries)
 
 # add the main executable
-add_executable(testdrive main.cpp window.cpp renderer.cpp)
+add_executable(testdrive main.cpp window.cpp renderer.cpp mesh.cpp shader.cpp utils.cpp)
 
 # add libraries to the main executable
 ## macos frameworks: https://stackoverflow.com/questions/27585896/how-to-use-framework-using-cmake
