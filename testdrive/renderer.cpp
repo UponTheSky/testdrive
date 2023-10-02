@@ -30,5 +30,7 @@ void render::Renderer::RenderBackground(const RenderState& state) {
 void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader) {
   shader.Use();
   mesh.BindVAO();
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  // glDrawArrays(GL_TRIANGLES, 0, 3);
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+  mesh.UnbindVAO();
 }
