@@ -7,6 +7,13 @@ int main() {
   render::Renderer renderer;
   render::RenderState* renderState = render::RenderState::GetInstance();
 
+  float vertices[] = {
+    -0.5f, -0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f,
+    0.0f, 0.5f, 0.0f
+  };
+
+
   while (!window->ShouldClose()) {
     window->ProcessInput();
 

@@ -9,10 +9,10 @@ render::RenderState* render::RenderState::GetInstance() {
   return _instance;
 }
 
-render::RenderState::RenderState(const Vec4& backgroundColor)
+render::RenderState::RenderState(const glm::vec4& backgroundColor)
 : _backgroundColor(backgroundColor) {}
 
-Vec4 render::RenderState::GetBackgroundColor() const {
+glm::vec4 render::RenderState::GetBackgroundColor() const {
   return _backgroundColor;
 }
 

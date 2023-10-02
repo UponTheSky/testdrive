@@ -7,6 +7,7 @@
 
 include(FetchContent)
 
+# glfw
 FetchContent_Declare(glfw GIT_REPOSITORY https://github.com/glfw/glfw.git)
 FetchContent_GetProperties(glfw)
 if (NOT glfw_POPULATED)
@@ -18,6 +19,7 @@ if (NOT glfw_POPULATED)
   add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
 endif()
 
+# glad
 FetchContent_Declare(glad GIT_REPOSITORY https://github.com/Dav1dde/glad.git)
 FetchContent_GetProperties(glad)
 if (NOT glad_POPULATED)
@@ -29,3 +31,7 @@ if (NOT glad_POPULATED)
   FetchContent_populate(glad)
   add_subdirectory(${glad_SOURCE_DIR} ${glad_BINARY_DIR})
 endif()
+
+# glm
+FetchContent_Declare(glm GIT_REPOSITORY https://github.com/g-truc/glm.git)
+FetchContent_MakeAvailable(glm)

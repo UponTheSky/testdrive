@@ -3,20 +3,18 @@
 // OpenGL libraries
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
-// custom libraries
-#include "vector.h"
+#include <glm/glm.hpp>
 
 namespace render {
   class RenderState {
     public:
       static RenderState* GetInstance();
-      Vec4 GetBackgroundColor() const;
+      glm::vec4 GetBackgroundColor() const;
 
     private:
-      RenderState(const Vec4& backgroundColor);
+      RenderState(const glm::vec4& backgroundColor);
       static RenderState* _instance;
-      Vec4 _backgroundColor;
+      glm::vec4 _backgroundColor;
   };
 
   class Renderer {
