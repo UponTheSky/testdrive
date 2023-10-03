@@ -29,8 +29,16 @@ void render::Renderer::RenderBackground(const RenderState& state) {
 
 void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader) {
   shader.Use();
-  mesh.BindVAO();
+
   // glDrawArrays(GL_TRIANGLES, 0, 3);
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+  /** temporary part for learning purpose */
+  float greenValue = (sin(glfwGetTime()) / 2.0f) + 0.5f;
+
+  shader.SetUniformVec4("ourColor", glm::vec4(0, greenValue, 0, 1));
+
+  /* ------------------------------------ */
+  mesh.BindVAO();
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
   mesh.UnbindVAO();
 }

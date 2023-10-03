@@ -74,6 +74,37 @@ void Shader::Use() const {
   if (_id == 0) {
     throw std::logic_error("The shader has not been built yet");
   }
-
+  _isUsed = true;
   glUseProgram(_id);
+}
+
+
+void Shader::SetUniformBool(const std::string& name, bool value) const {
+  _CheckCurrentlyUsed();
+  glUniform1i(glGetUniformLocation(_id, name.c_str()), (int)value);
+}
+
+void Shader::SetUniformInt(const std::string& name, int value) const {
+  _CheckCurrentlyUsed();
+  glUniform1i(glGetUniformLocation(_id, name.c_str()), value);
+}
+
+void Shader::SetUniformFloat(const std::string& name, float value) const {
+  _CheckCurrentlyUsed();
+  glUniform1f(glGetUniformLocation(_id, name.c_str()), value);
+}
+
+void Shader::SetUniformVec3(const std::string& name, const glm::vec3& value) const {
+  _CheckCurrentlyUsed();
+  glUniform3fv(glGetUniformLocation(_id, name.c_str()), 1, glm::value_ptr(value));
+}
+
+void Shader::SetUniformVec4(const std::string& name, const glm::vec4& value) const {
+  _CheckCurrentlyUsed();
+  glUniform4fv(glGetUniformLocation(_id, name.c_str()), 1, glm::value_ptr(value));
+}
+
+void Shader::SetUniformMat4(const std::string& name, const glm::mat4& value) const {
+  _CheckCurrentlyUsed();
+  glUniformMatrix4fv(glGetUniformLocation(_id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
