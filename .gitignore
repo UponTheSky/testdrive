@@ -35,4 +35,4 @@
 build/
 
 # Apple DS_Store
-**/.DS_Store/
+**/.DS_Store/*
