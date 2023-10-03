@@ -33,9 +33,6 @@ void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader)
   // glDrawArrays(GL_TRIANGLES, 0, 3);
 
   /** temporary part for learning purpose */
-  float greenValue = (sin(glfwGetTime()) / 2.0f) + 0.5f;
-
-  shader.SetUniformVec4("ourColor", glm::vec4(0, greenValue, 0, 1));
 
   /* ------------------------------------ */
   mesh.BindVAO();
