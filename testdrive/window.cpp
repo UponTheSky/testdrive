@@ -31,13 +31,10 @@ window::GLFWwindowWrapper* window::GLFWwindowWrapper::GetInstance() {
       throw std::runtime_error("Failed to create GLFW window");
     }
     glfwMakeContextCurrent(glfw_window); // don't forget it!
+    glfwSetFramebufferSizeCallback(glfw_window, framebuffer_size_callback);
 
     // load OpenGL functions(GLAD)
     LoadOpenGLFunctions();
-
-    // set up the viewport
-    glViewport(0, 0, INIT_WINDOW_WIDTH, INIT_WINDOW_HEIGHT);
-    glfwSetFramebufferSizeCallback(glfw_window, framebuffer_size_callback);
 
     _instance = new GLFWwindowWrapper(glfw_window);
   }
