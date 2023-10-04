@@ -10,10 +10,11 @@ int main() {
   render::RenderState* renderState = render::RenderState::GetInstance();
 
   float vertices[] = {
-    0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // top right
-    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,// bottom left
-    -0.5f, 0.5f, 0.0f, 0.5f, 0.5f, 0.5f// top left
+    // positions // colors // texture coords
+    0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
+    0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+    -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f // top left
   };
   unsigned int indices[] = { // note that we start from 0!
     0, 1, 3, // first triangle
@@ -23,7 +24,7 @@ int main() {
   model::Mesh mesh;
   Shader shader;
 
-  mesh.Setup(vertices, sizeof(vertices), indices, sizeof(indices));
+  mesh.Setup(vertices, sizeof(vertices), indices, sizeof(indices), "resources/container.jpeg");
   shader.Build("shader/vertex.glsl", "shader/fragment.glsl");
 
   while (!window->ShouldClose()) {

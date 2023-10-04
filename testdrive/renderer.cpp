@@ -29,6 +29,7 @@ void render::Renderer::RenderBackground(const RenderState& state) {
 
 void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader) {
   shader.Use();
+  shader.SetUniformInt("ourTexture", 0);
 
   // glDrawArrays(GL_TRIANGLES, 0, 3);
 
