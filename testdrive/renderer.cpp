@@ -23,20 +23,37 @@ void render::Renderer::RenderBackground(const RenderState& state) {
     state.GetBackgroundColor()[2],
     state.GetBackgroundColor()[3]
   );
-
-  glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader) {
+void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader, const Camera& camera) {
   shader.Use();
   shader.SetUniformInt("ourTexture", 0);
 
   // glDrawArrays(GL_TRIANGLES, 0, 3);
 
   /** temporary part for learning purpose */
+  shader.SetUniformMat4(
+    "model",
+    glm::rotate(
+      mesh.GetTrans(),
+      (float)glfwGetTime() * glm::radians(50.0f),
+      glm::vec3(0.5f, 1.0f, 0.0f)
+    )
+  );
+  shader.SetUniformMat4("view", camera.GetViewTrans());
+  shader.SetUniformMat4("projection", camera.GetProjection());
 
   /* ------------------------------------ */
   mesh.BindVAO();
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+  // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+  glDrawArrays(GL_TRIANGLES, 0, 36);
   mesh.UnbindVAO();
+}
+
+void render::Renderer::ClearBuffers() const {
+  glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+}
+
+void render::Renderer::SetRenderOptions() const {
+  glEnable(GL_DEPTH_TEST);
 }

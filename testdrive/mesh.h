@@ -17,7 +17,8 @@ namespace model {
 
   class Mesh {
     public:
-      Mesh() = default;
+      Mesh(const glm::mat4& trans)
+      : _trans(trans), _VAO(0), _VBO(0), _EBO(0), _texture(0) {}
 
       void Setup(
         float* vertices,
@@ -34,9 +35,11 @@ namespace model {
         glBindTexture(GL_TEXTURE_2D, _texture);
       }
       void UnbindTexture() const { glBindTexture(GL_TEXTURE_2D, 0); }
+      glm::mat4 GetTrans() const { return _trans; }
 
     private:
       unsigned int _VAO, _VBO, _EBO, _texture;
+      glm::mat4 _trans;
 
       void _SetupTexture(const std::string& texturePath);
   };

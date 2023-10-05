@@ -7,6 +7,7 @@
 
 #include "mesh.h"
 #include "shader.h"
+#include "camera.h"
 
 namespace render {
   class RenderState {
@@ -25,7 +26,9 @@ namespace render {
     public:
       Renderer() = default;
 
+      void ClearBuffers() const;
+      void SetRenderOptions() const;
       void RenderBackground(const RenderState& state);
-      void RenderMesh(const model::Mesh& mesh, const Shader& shader);
+      void RenderMesh(const model::Mesh& mesh, const Shader& shader, const Camera& camera);
   };
 };

@@ -20,20 +20,18 @@ void model::Mesh::Setup(
   glBufferData(GL_ARRAY_BUFFER, verticesSize, vertices, GL_STATIC_DRAW);
 
   // setup ebo
-  glGenBuffers(1, &_EBO);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_STATIC_DRAW);
+  // glGenBuffers(1, &_EBO);
+  // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
+  // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_STATIC_DRAW);
 
   // setup texture
   _SetupTexture(texturePath);
 
   // set vertex attrib pointers
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // position
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(sizeof(float) * 3)); // color
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(sizeof(float) * 6)); // color
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); // position
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(sizeof(float) * 3)); // texture
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
-  glEnableVertexAttribArray(2);
 
   glBindVertexArray(0);
 }
