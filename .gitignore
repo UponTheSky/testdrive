@@ -35,4 +35,8 @@
 build/
 
 # Apple DS_Store
-**/.DS_Store/*
+.DS_Store
+**/.DS_Store
+
+# external libraries
+testdrive/**/stb_image.h
