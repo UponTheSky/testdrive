@@ -37,6 +37,11 @@ void model::Mesh::Setup(
 }
 
 void model::Mesh::_SetupTexture(const std::string& texturePath) {
+  if (texturePath.size() == 0) {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return;
+  }
+
   // activate texture unit
   glActiveTexture(GL_TEXTURE0);
 
