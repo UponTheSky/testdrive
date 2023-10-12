@@ -9,15 +9,16 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+// custom headers
+#include "consts.h"
+#include "renderer.h"
+#include "camera.h"
+
 /**
  * The namespace related to the window object.
  * The window object should be maintained as a singleton object.
 */
 namespace window {
-  // initial window width, height, and title
-  const unsigned int INIT_WINDOW_WIDTH = 800;
-  const unsigned int INIT_WINDOW_HEIGHT = 600;
-  const std::string INIT_WINDOW_TITLE = "Test Drive Renderer";
 
   // Window object created by the GLFW library
   class GLFWwindowWrapper {
@@ -30,7 +31,8 @@ namespace window {
       void SwapBuffers() const;
       void PollEvents() const;
 
-      void ProcessInput();
+      void ProcessInput(Camera& camera) const;
+      void SetWindowOptions() const;
 
     private:
       // singleton
@@ -47,4 +49,6 @@ namespace window {
 
   // callbacks
   void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-};
+  void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+  void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+}
