@@ -9,8 +9,10 @@ render::RenderState* render::RenderState::GetInstance() {
   return _instance;
 }
 
-render::RenderState::RenderState(const glm::vec4& backgroundColor)
-: _backgroundColor(backgroundColor) {}
+render::RenderState::RenderState(
+  const glm::vec4& backgroundColor) :
+_backgroundColor(backgroundColor),
+_lastFrame(0) {}
 
 glm::vec4 render::RenderState::GetBackgroundColor() const {
   return _backgroundColor;
@@ -25,22 +27,19 @@ void render::Renderer::RenderBackground(const RenderState& state) {
   );
 }
 
-void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader, const Camera& camera) {
+void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader, Camera& camera) {
   shader.Use();
   shader.SetUniformInt("ourTexture", 0);
 
   // glDrawArrays(GL_TRIANGLES, 0, 3);
 
   /** temporary part for learning purpose */
-  shader.SetUniformMat4(
-    "model",
-    glm::rotate(
-      mesh.GetTrans(),
-      (float)glfwGetTime() * glm::radians(50.0f),
-      glm::vec3(0.5f, 1.0f, 0.0f)
-    )
-  );
-  shader.SetUniformMat4("view", camera.GetViewTrans());
+  shader.SetUniformMat4("model", mesh.GetTrans());
+
+  camera.BuildView();
+  camera.BuildProjection();
+
+  shader.SetUniformMat4("view", camera.GetView());
   shader.SetUniformMat4("projection", camera.GetProjection());
 
   /* ------------------------------------ */

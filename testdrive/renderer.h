@@ -13,22 +13,28 @@ namespace render {
   class RenderState {
     public:
       static RenderState* GetInstance();
+
       glm::vec4 GetBackgroundColor() const;
+      float GetLastFrame() const { return _lastFrame; }
+      void SetLastFrame(float lastFrame) { _lastFrame = lastFrame; }
 
     private:
+      // singleton pattern
       static RenderState* _instance;
-      glm::vec4 _backgroundColor;
-
       RenderState(const glm::vec4& backgroundColor);
+
+      // state variables
+      glm::vec4 _backgroundColor;
+      float _lastFrame;
   };
 
-  class Renderer {
+class Renderer {
     public:
       Renderer() = default;
 
       void ClearBuffers() const;
       void SetRenderOptions() const;
       void RenderBackground(const RenderState& state);
-      void RenderMesh(const model::Mesh& mesh, const Shader& shader, const Camera& camera);
+      void RenderMesh(const model::Mesh& mesh, const Shader& shader, Camera& camera);
   };
 };

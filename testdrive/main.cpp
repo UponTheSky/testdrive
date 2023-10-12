@@ -9,13 +9,22 @@ int main() {
   window::GLFWwindowWrapper* window = window::GLFWwindowWrapper::GetInstance();
   render::Renderer renderer;
   render::RenderState* renderState = render::RenderState::GetInstance();
+
+  const std::string cameraName = "testCamera";
+
   Camera camera(
-    glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f)),
+    cameraName,
+    glm::vec3(0.0f, 0.0f, 3.0f),
+    glm::vec3(0.0f, 0.0f, -1.0f),
+    glm::vec3(0.0f, 1.0f, 0.0f),
     45.0f,
     800.0f / 600.0f,
     0.1f,
     100.0f
   );
+
+  camera.BuildView();
+  camera.BuildProjection();
 
   // float vertices[] = {
   //   // positions // colors // texture coords
@@ -77,8 +86,9 @@ int main() {
   shader.Build("shader/vertex.glsl", "shader/fragment.glsl");
 
   renderer.SetRenderOptions();
+  renderState->SetLastFrame(static_cast<float>(glfwGetTime()));
   while (!window->ShouldClose()) {
-    window->ProcessInput();
+    window->ProcessInput(camera);
 
     renderer.ClearBuffers();
     renderer.RenderBackground(*renderState);

@@ -1,3 +1,4 @@
+#include "camera.h"
 #include "window.h"
 
 #include <iostream>
@@ -31,7 +32,11 @@ window::GLFWwindowWrapper* window::GLFWwindowWrapper::GetInstance() {
       throw std::runtime_error("Failed to create GLFW window");
     }
     glfwMakeContextCurrent(glfw_window); // don't forget it!
+
+    // set callbacks
     glfwSetFramebufferSizeCallback(glfw_window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(glfw_window, mouse_callback);
+    glfwSetScrollCallback(glfw_window, scroll_callback);
 
     // load OpenGL functions(GLAD)
     LoadOpenGLFunctions();
@@ -45,10 +50,36 @@ window::GLFWwindowWrapper* window::GLFWwindowWrapper::GetInstance() {
 window::GLFWwindowWrapper::GLFWwindowWrapper(GLFWwindow* glfw_window)
 : _glfw_window(glfw_window) {}
 
-void window::GLFWwindowWrapper::ProcessInput() {
+void window::GLFWwindowWrapper::ProcessInput(Camera& camera) const {
+  render::RenderState* renderState = render::RenderState::GetInstance();
+
+  float currentFrame = static_cast<float>(glfwGetTime());
+  float cameraSpeed = 2.5f * (currentFrame - renderState->GetLastFrame());
+  renderState->SetLastFrame(currentFrame);
+
   if (glfwGetKey(_glfw_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
     glfwSetWindowShouldClose(_glfw_window, true);
   }
+
+  if (glfwGetKey(_glfw_window, GLFW_KEY_W) == GLFW_PRESS) {
+    camera.SetPosition(camera.GetPosition() + cameraSpeed * camera.GetDirection());
+  }
+
+  if (glfwGetKey(_glfw_window, GLFW_KEY_S) == GLFW_PRESS) {
+    camera.SetPosition(camera.GetPosition() - cameraSpeed * camera.GetDirection());
+  }
+
+  if (glfwGetKey(_glfw_window, GLFW_KEY_A) == GLFW_PRESS) {
+    camera.SetPosition(camera.GetPosition() - camera.GetRight() * cameraSpeed);
+  }
+
+  if (glfwGetKey(_glfw_window, GLFW_KEY_D) == GLFW_PRESS) {
+    camera.SetPosition(camera.GetPosition() + camera.GetRight() * cameraSpeed);
+  }
+}
+
+void window::GLFWwindowWrapper::SetWindowOptions() const {
+  glfwSetInputMode(_glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 /* glfw function wrapped */
@@ -83,4 +114,29 @@ void window::LoadOpenGLFunctions() {
 /* window callbacks */
 void window::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
+}
+
+void window::mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+  const float sensitivity = 0.1f;
+  Camera* camera = Camera::GetCamera(std::string("testCamera"));
+
+  float xoffset = (xpos - camera->GetLastX()) * sensitivity;
+  float yoffset = (camera->GetLastY() - ypos) * sensitivity;
+
+  camera->SetLastX(xpos);
+  camera->SetLastY(ypos);
+
+  camera->SetXaxisRotation(glm::radians(xoffset));
+  camera->SetYaxisRotation(glm::radians(yoffset));
+}
+
+void window::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+  Camera* camera = Camera::GetCamera(std::string("testCamera"));
+  camera->SetFov(camera->GetFov() - static_cast<float>(yoffset));
+
+  if (camera->GetFov() < 1.0f) {
+    camera->SetFov(1.0f);
+  } else if (camera->GetFov() > 45.0f) {
+    camera->SetFov(45.0f);
+  }
 }
