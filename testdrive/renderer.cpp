@@ -27,7 +27,12 @@ void render::Renderer::RenderBackground(const RenderState& state) {
   );
 }
 
-void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader, Camera& camera) {
+void render::Renderer::RenderMesh(
+  const model::Mesh& mesh,
+  const Shader& shader,
+  Camera& camera,
+  const Light& light
+) {
   shader.Use();
   shader.SetUniformInt("ourTexture", 0);
 
@@ -42,16 +47,38 @@ void render::Renderer::RenderMesh(const model::Mesh& mesh, const Shader& shader,
   shader.SetUniformMat4("view", camera.GetView());
   shader.SetUniformMat4("projection", camera.GetProjection());
 
-  if (!mesh.IsLight()) {
-    shader.SetUniformVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
-  }
-  shader.SetUniformVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+  shader.SetUniformVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
+  shader.SetUniformVec3("lightColor", light.GetColor());
+  shader.SetUniformVec3("lightPos", light.GetPosition());
 
   /* ------------------------------------ */
   mesh.BindVAO();
   // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
   glDrawArrays(GL_TRIANGLES, 0, 36);
   mesh.UnbindVAO();
+}
+
+void render::Renderer::RenderLight(const Light& light, const Shader& shader, Camera& camera) {
+  shader.Use();
+
+  // glDrawArrays(GL_TRIANGLES, 0, 3);
+
+  /** temporary part for learning purpose */
+  shader.SetUniformMat4("model", light.GetTrans());
+
+  camera.BuildView();
+  camera.BuildProjection();
+
+  shader.SetUniformMat4("view", camera.GetView());
+  shader.SetUniformMat4("projection", camera.GetProjection());
+
+  shader.SetUniformVec3("lightColor", light.GetColor());
+
+  /* ------------------------------------ */
+  light.BindVAO();
+  // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+  glDrawArrays(GL_TRIANGLES, 0, 36);
+  light.UnbindVAO();
 }
 
 void render::Renderer::ClearBuffers() const {

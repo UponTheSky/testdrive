@@ -17,8 +17,10 @@ namespace model {
 
   class Mesh {
     public:
-      Mesh(const glm::mat4& trans, bool is_light = false)
-      : _trans(trans), _VAO(0), _VBO(0), _EBO(0), _texture(0), _is_light(is_light) {}
+      Mesh(const glm::mat4& trans)
+      : _trans(trans), _VAO(0), _VBO(0), _EBO(0), _texture(0) {}
+
+      virtual ~Mesh() = default;
 
       void Setup(
         float* vertices,
@@ -37,12 +39,9 @@ namespace model {
       void UnbindTexture() const { glBindTexture(GL_TEXTURE_2D, 0); }
       glm::mat4 GetTrans() const { return _trans; }
 
-      bool IsLight() const { return _is_light; }
-
     private:
       unsigned int _VAO, _VBO, _EBO, _texture;
       glm::mat4 _trans;
-      const bool _is_light;
 
       void _SetupTexture(const std::string& texturePath);
   };

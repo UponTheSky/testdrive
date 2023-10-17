@@ -3,6 +3,7 @@
 #include "mesh.h"
 #include "shader.h"
 #include "camera.h"
+#include "light.h"
 
 int main() {
 
@@ -84,10 +85,12 @@ int main() {
   Shader objectShader;
   objectShader.Build("shader/vertex.glsl", "shader/fragment.glsl");
 
-
-  model::Mesh lightSource(
-    glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(1.2f, 1.0f, 2.0f)), glm::vec3(0.2f)),
-    true
+  const glm::vec3 lightPos = glm::vec3(1.2f, 1.0f, 2.0f);
+  const glm::vec3 lightColor = glm::vec3(1.0f);
+  Light lightSource(
+    glm::scale(glm::translate(glm::mat4(1.0f), lightPos), glm::vec3(0.2f)),
+    lightColor,
+    lightPos
   );
   lightSource.Setup(vertices, sizeof(vertices), indices, sizeof(indices), "");
 
@@ -101,8 +104,8 @@ int main() {
 
     renderer.ClearBuffers();
     renderer.RenderBackground(*renderState);
-    renderer.RenderMesh(object, objectShader, camera);
-    renderer.RenderMesh(lightSource, lightShader, camera);
+    renderer.RenderMesh(object, objectShader, camera, lightSource);
+    renderer.RenderLight(lightSource, lightShader, camera);
 
     window->PollEvents();
     window->SwapBuffers();
