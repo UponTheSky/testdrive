@@ -1,3 +1,5 @@
+#pragma once
+
 #include "mesh.h"
 
 class Light : public model::Mesh {
