@@ -102,6 +102,11 @@ int main() {
   while (!window->ShouldClose()) {
     window->ProcessInput(camera);
 
+    float currTime = glfwGetTime();
+    lightSource.SetColor(
+      glm::vec3(2.0f, 0.7f, 1.3f) * sin(currTime)
+    );
+
     renderer.ClearBuffers();
     renderer.RenderBackground(*renderState);
     renderer.RenderMesh(object, objectShader, camera, lightSource);

@@ -8,6 +8,7 @@ class Light : public model::Mesh {
     : Mesh(trans), _color(color), _position(position) {}
 
     glm::vec3 GetColor() const { return _color; }
+    void SetColor(const glm::vec3& color) { _color = color; }
     glm::vec3 GetPosition() const { return _position; }
 
   private:

@@ -47,9 +47,16 @@ void render::Renderer::RenderMesh(
   shader.SetUniformMat4("view", camera.GetView());
   shader.SetUniformMat4("projection", camera.GetProjection());
 
-  shader.SetUniformVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
-  shader.SetUniformVec3("lightColor", light.GetColor());
   shader.SetUniformVec3("lightPos", light.GetPosition());
+  shader.SetUniformVec3("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
+  shader.SetUniformVec3("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
+  shader.SetUniformVec3("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+  shader.SetUniformFloat("material.shininess", 32.0f);
+  shader.SetUniformVec3("light.ambient", glm::vec3(0.2f) * light.GetColor());
+  shader.SetUniformVec3("light.diffuse", glm::vec3(0.5f) * light.GetColor());
+  shader.SetUniformVec3("light.specular", glm::vec3(1.0f));
+
+  shader.SetUniformVec3("viewPos", camera.GetPosition());
 
   /* ------------------------------------ */
   mesh.BindVAO();
