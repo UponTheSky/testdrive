@@ -34,7 +34,7 @@ void render::Renderer::RenderMesh(
   const Light& light
 ) {
   shader.Use();
-  shader.SetUniformInt("ourTexture", 0);
+  shader.SetUniformInt("material.diffuse", 0);
 
   // glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -48,8 +48,6 @@ void render::Renderer::RenderMesh(
   shader.SetUniformMat4("projection", camera.GetProjection());
 
   shader.SetUniformVec3("lightPos", light.GetPosition());
-  shader.SetUniformVec3("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
-  shader.SetUniformVec3("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
   shader.SetUniformVec3("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
   shader.SetUniformFloat("material.shininess", 32.0f);
   shader.SetUniformVec3("light.ambient", glm::vec3(0.2f) * light.GetColor());
@@ -60,9 +58,11 @@ void render::Renderer::RenderMesh(
 
   /* ------------------------------------ */
   mesh.BindVAO();
+  mesh.BindTexture();
   // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
   glDrawArrays(GL_TRIANGLES, 0, 36);
   mesh.UnbindVAO();
+  mesh.UnbindTexture();
 }
 
 void render::Renderer::RenderLight(const Light& light, const Shader& shader, Camera& camera) {

@@ -80,7 +80,7 @@ int main() {
   };
 
   model::Mesh object(glm::mat4(1.0f));
-  object.Setup(vertices, sizeof(vertices), indices, sizeof(indices), "resources/container.jpeg");
+  object.Setup(vertices, sizeof(vertices), indices, sizeof(indices), "resources/container2.jpeg");
 
   Shader objectShader;
   objectShader.Build("shader/vertex.glsl", "shader/fragment.glsl");
@@ -102,10 +102,7 @@ int main() {
   while (!window->ShouldClose()) {
     window->ProcessInput(camera);
 
-    float currTime = glfwGetTime();
-    lightSource.SetColor(
-      glm::vec3(2.0f, 0.7f, 1.3f) * sin(currTime)
-    );
+    lightSource.SetColor(glm::vec3(1.0f));
 
     renderer.ClearBuffers();
     renderer.RenderBackground(*renderState);
