@@ -8,7 +8,7 @@ void model::Mesh::Setup(
   unsigned int verticesSize,
   unsigned int* indices,
   unsigned int indicesSize,
-  const std::string& texturePath
+  const std::vector<const char*>& texturePaths
 ) {
   // setup vao
   glGenVertexArrays(1, &_VAO);
@@ -25,7 +25,10 @@ void model::Mesh::Setup(
   // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_STATIC_DRAW);
 
   // setup texture
-  _SetupTexture(texturePath);
+  for (size_t i = 0; i < texturePaths.size(); i++)
+  {
+    _SetupTexture(texturePaths[i], i);
+  }
 
   // set vertex attrib pointers
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // position
@@ -38,18 +41,31 @@ void model::Mesh::Setup(
   glBindVertexArray(0);
 }
 
-void model::Mesh::_SetupTexture(const std::string& texturePath) {
+void model::Mesh::BindTexture(size_t index) const {
+  if (index == 0) {
+    glActiveTexture(GL_TEXTURE0);
+  } else {
+    glActiveTexture(GL_TEXTURE1);
+  }
+    glBindTexture(GL_TEXTURE_2D, _textures[index]);
+  }
+
+void model::Mesh::_SetupTexture(const std::string& texturePath, size_t index) {
   if (texturePath.size() == 0) {
     glBindTexture(GL_TEXTURE_2D, 0);
     return;
   }
 
   // activate texture unit
-  glActiveTexture(GL_TEXTURE0);
+  if (index == 0) {
+    glActiveTexture(GL_TEXTURE0);
+  } else {
+    glActiveTexture(GL_TEXTURE1);
+  }
 
   // generate texture
-  glGenTextures(1, &_texture);
-  glBindTexture(GL_TEXTURE_2D, _texture);
+  glGenTextures(1, &_textures[index]);
+  glBindTexture(GL_TEXTURE_2D, _textures[index]);
 
   // set texture options
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

@@ -80,7 +80,13 @@ int main() {
   };
 
   model::Mesh object(glm::mat4(1.0f));
-  object.Setup(vertices, sizeof(vertices), indices, sizeof(indices), "resources/container2.jpeg");
+  object.Setup(
+    vertices,
+    sizeof(vertices),
+    indices,
+    sizeof(indices),
+    {"resources/container.jpeg", "resources/container2_specular.png"}
+  );
 
   Shader objectShader;
   objectShader.Build("shader/vertex.glsl", "shader/fragment.glsl");
@@ -92,7 +98,7 @@ int main() {
     lightColor,
     lightPos
   );
-  lightSource.Setup(vertices, sizeof(vertices), indices, sizeof(indices), "");
+  lightSource.Setup(vertices, sizeof(vertices), indices, sizeof(indices), {""});
 
   Shader lightShader;
   lightShader.Build("shader/vertex_light.glsl", "shader/fragment_light.glsl");

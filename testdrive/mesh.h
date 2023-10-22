@@ -2,6 +2,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <vector>
 
 #include <glad/glad.h>
 
@@ -18,7 +19,10 @@ namespace model {
   class Mesh {
     public:
       Mesh(const glm::mat4& trans)
-      : _trans(trans), _VAO(0), _VBO(0), _EBO(0), _texture(0) {}
+      : _trans(trans), _VAO(0), _VBO(0), _EBO(0) {
+        _textures[0] = 0;
+        _textures[1] = 0;
+      }
 
       virtual ~Mesh() = default;
 
@@ -27,22 +31,20 @@ namespace model {
         unsigned int verticesSize,
         unsigned int* indices,
         unsigned int indicesSize,
-        const std::string& texturePath
+        const std::vector<const char*>& texturePaths
       );
 
       void BindVAO() const { glBindVertexArray(_VAO); }
       void UnbindVAO() const { glBindVertexArray(0); }
-      void BindTexture() const {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, _texture);
-      }
+      void BindTexture(size_t index) const;
       void UnbindTexture() const { glBindTexture(GL_TEXTURE_2D, 0); }
       glm::mat4 GetTrans() const { return _trans; }
 
     private:
-      unsigned int _VAO, _VBO, _EBO, _texture;
+      unsigned int _VAO, _VBO, _EBO;
+      unsigned int _textures[2];
       glm::mat4 _trans;
 
-      void _SetupTexture(const std::string& texturePath);
+      void _SetupTexture(const std::string& texturePath, size_t index);
   };
 };

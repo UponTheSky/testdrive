@@ -4,7 +4,7 @@ render::RenderState* render::RenderState::_instance = nullptr;
 
 render::RenderState* render::RenderState::GetInstance() {
   if (_instance == nullptr) {
-    _instance = new RenderState({ 0.2f, 0.3f, 0.3f, 1.0f });
+    _instance = new RenderState({ 0.1f, 0.1f, 0.1f, 1.0f });
   }
   return _instance;
 }
@@ -35,6 +35,8 @@ void render::Renderer::RenderMesh(
 ) {
   shader.Use();
   shader.SetUniformInt("material.diffuse", 0);
+  shader.SetUniformInt("material.specular", 1);
+  shader.SetUniformFloat("material.shininess", 32.0f);
 
   // glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -46,19 +48,18 @@ void render::Renderer::RenderMesh(
 
   shader.SetUniformMat4("view", camera.GetView());
   shader.SetUniformMat4("projection", camera.GetProjection());
+  shader.SetUniformVec3("viewPos", camera.GetPosition());
 
   shader.SetUniformVec3("lightPos", light.GetPosition());
-  shader.SetUniformVec3("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
-  shader.SetUniformFloat("material.shininess", 32.0f);
-  shader.SetUniformVec3("light.ambient", glm::vec3(0.2f) * light.GetColor());
+  shader.SetUniformVec3("light.ambient", glm::vec3(0.1f) * light.GetColor());
   shader.SetUniformVec3("light.diffuse", glm::vec3(0.5f) * light.GetColor());
   shader.SetUniformVec3("light.specular", glm::vec3(1.0f));
 
-  shader.SetUniformVec3("viewPos", camera.GetPosition());
 
   /* ------------------------------------ */
   mesh.BindVAO();
-  mesh.BindTexture();
+  mesh.BindTexture(0);
+  mesh.BindTexture(1);
   // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
   glDrawArrays(GL_TRIANGLES, 0, 36);
   mesh.UnbindVAO();
