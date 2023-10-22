@@ -50,10 +50,17 @@ void render::Renderer::RenderMesh(
   shader.SetUniformMat4("projection", camera.GetProjection());
   shader.SetUniformVec3("viewPos", camera.GetPosition());
 
-  shader.SetUniformVec3("lightPos", light.GetPosition());
+  shader.SetUniformVec3("light.position", light.GetPosition());
   shader.SetUniformVec3("light.ambient", glm::vec3(0.1f) * light.GetColor());
   shader.SetUniformVec3("light.diffuse", glm::vec3(0.5f) * light.GetColor());
   shader.SetUniformVec3("light.specular", glm::vec3(1.0f));
+  shader.SetUniformVec3("light.direction", glm::vec3(0.0f) - light.GetPosition());
+  shader.SetUniformFloat("light.cutOff", static_cast<float>(glm::cos(glm::radians(12.5f))));
+  shader.SetUniformFloat("light.outerCutOff", static_cast<float>(glm::cos(glm::radians(17.5f))));
+
+  shader.SetUniformFloat("light.constant", 1.0f);
+  shader.SetUniformFloat("light.linear", 0.09f);
+  shader.SetUniformFloat("light.quadratic", 0.032f);
 
 
   /* ------------------------------------ */
