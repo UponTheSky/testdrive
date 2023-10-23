@@ -35,3 +35,7 @@ endif()
 # glm
 FetchContent_Declare(glm GIT_REPOSITORY https://github.com/g-truc/glm.git)
 FetchContent_MakeAvailable(glm)
+
+# assimp
+FetchContent_Declare(assimp GIT_REPOSITORY https://github.com/assimp/assimp.git)
+FetchContent_MakeAvailable(assimp)

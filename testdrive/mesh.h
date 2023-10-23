@@ -1,50 +1,66 @@
 #pragma once
 
+// stdlibs
 #include <string>
 #include <stdexcept>
 #include <vector>
 
+// externals
 #include <glad/glad.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+// customs
+#include "shader.h"
 
 
 namespace model {
   struct Vertex {
     glm::vec3 Position;
+    glm::vec3 Normal;
+    glm::vec2 TexCoords;
+  };
+
+  struct Texture {
+    unsigned int id;
+    std::string type;
   };
 
   class Mesh {
     public:
-      Mesh(const glm::mat4& trans)
-      : _trans(trans), _VAO(0), _VBO(0), _EBO(0) {
-        _textures[0] = 0;
-        _textures[1] = 0;
-      }
-
-      virtual ~Mesh() = default;
-
-      void Setup(
-        float* vertices,
-        unsigned int verticesSize,
-        unsigned int* indices,
-        unsigned int indicesSize,
-        const std::vector<const char*>& texturePaths
+      Mesh(
+        const std::vector<Vertex>& vertices,
+        const std::vector<unsigned int>& indices,
+        const std::vector<Texture>& textures
       );
 
-      void BindVAO() const { glBindVertexArray(_VAO); }
+      void Draw(const Shader& shader) const;
+
+      // TODO: deal with these legacies
+      void BindVAO() const { glBindVertexArray(mVAO); }
       void UnbindVAO() const { glBindVertexArray(0); }
       void BindTexture(size_t index) const;
       void UnbindTexture() const { glBindTexture(GL_TEXTURE_2D, 0); }
-      glm::mat4 GetTrans() const { return _trans; }
+      glm::mat4 GetTrans() const { return mTransformation; }
 
     private:
-      unsigned int _VAO, _VBO, _EBO;
-      unsigned int _textures[2];
-      glm::mat4 _trans;
+      // mesh data
+      std::vector<Vertex> mVertices;
+      std::vector<unsigned int> mIndices;
+      std::vector<Texture> mTextures;
 
+      // render data
+      unsigned int mVAO, mVBO, mEBO;
+
+      // TODO: deal with these legacies
+      unsigned int _textures[2];
+      glm::mat4 mTransformation;
+
+    private:
+      void SetupMesh();
+
+      // legacies
       void _SetupTexture(const std::string& texturePath, size_t index);
   };
 };
