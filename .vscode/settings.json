@@ -101,6 +101,11 @@
     "filesystem": "cpp",
     "*.ipp": "cpp",
     "version": "cpp",
-    "*.inc": "cpp"
+    "*.inc": "cpp",
+    "any": "cpp",
+    "coroutine": "cpp",
+    "forward_list": "cpp",
+    "regex": "cpp",
+    "unordered_set": "cpp"
   }
 }
