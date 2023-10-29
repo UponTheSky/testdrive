@@ -25,6 +25,7 @@ namespace model {
   struct Texture {
     unsigned int id;
     std::string type;
+    std::string path;
   };
 
   class Mesh {
@@ -40,8 +41,6 @@ namespace model {
       // TODO: deal with these legacies
       void BindVAO() const { glBindVertexArray(mVAO); }
       void UnbindVAO() const { glBindVertexArray(0); }
-      void BindTexture(size_t index) const;
-      void UnbindTexture() const { glBindTexture(GL_TEXTURE_2D, 0); }
       glm::mat4 GetTrans() const { return mTransformation; }
 
     private:
@@ -54,13 +53,9 @@ namespace model {
       unsigned int mVAO, mVBO, mEBO;
 
       // TODO: deal with these legacies
-      unsigned int _textures[2];
       glm::mat4 mTransformation;
 
     private:
       void SetupMesh();
-
-      // legacies
-      void _SetupTexture(const std::string& texturePath, size_t index);
   };
 };

@@ -40,3 +40,4 @@ build/
 
 # external libraries
 testdrive/**/stb_image.h
+resources/

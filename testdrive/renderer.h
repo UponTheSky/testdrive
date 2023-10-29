@@ -6,9 +6,10 @@
 #include <glm/glm.hpp>
 
 #include "mesh.h"
+#include "model.h"
 #include "shader.h"
 #include "camera.h"
-#include "light.h"
+// #include "light.h"
 
 namespace render {
   class RenderState {
@@ -36,7 +37,8 @@ class Renderer {
       void ClearBuffers() const;
       void SetRenderOptions() const;
       void RenderBackground(const RenderState& state);
-      void RenderMesh(const model::Mesh& mesh, const Shader& shader, Camera& camera, const Light& light);
-      void RenderLight(const Light& light, const Shader& shader, Camera& camera);
+      // void RenderMesh(const model::Mesh& mesh, const Shader& shader, Camera& camera, const Light& light);
+      void RenderModel(const model::Model& model, const Shader& shader, Camera& camera);
+      // void RenderLight(const Light& light, const Shader& shader, Camera& camera);
   };
 };
